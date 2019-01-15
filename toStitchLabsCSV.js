@@ -12,7 +12,7 @@ exports.StitchLabsOrderFields = [{
   value: "meta.timestamps.created_at"
 }, {
   label: "ship_date",
-  value: "meta.timestamps.created_at"
+  value: "shipping_date"
 }, {
   label: "subtotal",
   value: "subtotal"
@@ -112,7 +112,7 @@ exports.checkOrders = async function(orders) {
 
 /* given a single order, looks at its items to check for a negative priced item (promotion)
 or an item with a sku of "tax amount" (tax), appends those values to the order under fields "promotion"
-and "tax" before returning the order. If it doesn't find any items matching the criteria, 
+and "tax" before returning the order. If it doesn't find any items matching the criteria,
 it returns the orders as is*/
 const checkForTaxOrPromotion = async function(order) {
   let items      = order.relationships.items;
@@ -195,23 +195,13 @@ const toSFTPFile = function(content, path) {
                 conn.end();
               });
             } else {
-              console.log("file at path ", path, " is not empty");
-              let readStream = sftp.createReadStream(path);
-              let fullData = "";
-              readStream.on("data", function(data) {
-                console.log("read file data at path ", path);
-                let originalData = data.toString("utf8");
-                fullData = originalData + content;
-              });
-              readStream.on("end", async function() {
-                let writeStream = sftp.createWriteStream(path);
-                console.log("writing data to path ", path);
-                writeStream.end(fullData);
-                writeStream.on("close", async() => {
-                  console.log(" - file transferred succesfully to path ", path);
-                  conn.end();
-                  resolve("toStitchLabsCSV is finished");
-                });
+              let writeStream = sftp.createWriteStream(path, {flags:'a'});
+              console.log("writing data to path ", path);
+              writeStream.end(content);
+              writeStream.on("close", async() => {
+                console.log(" - file transferred succesfully to path ", path);
+                conn.end();
+                resolve("toStitchLabsCSV is finished");
               });
             }
           });
