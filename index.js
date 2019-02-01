@@ -12,7 +12,7 @@ exports.myHandler = async function(event, context, callback) {
     let orders   = await moltinFunctions.GetOrders(0, date);
     return exports.process(orders, 0, finished[0], date, finished[1]);
   } catch (e) {
-    console.log(e);
+    callback(e);
     return e;
   }
 };

@@ -103,7 +103,7 @@ exports.getTransactions = function(order) {
 
 exports.formatOrders = async function(orders, items) {
   let formattedOrders = [];
-  let formattedItems = [];
+  let formattedItems  = [];
   for (const order of orders.data) {
     let orderWithItems = await exports.itemsLookup(
       order,
@@ -115,15 +115,16 @@ exports.formatOrders = async function(orders, items) {
     orderWithItems.shipping_address.line_2 = orderWithItems.shipping_address.line_2.replace(/[^\w\s\-]/gi, '');
     orderWithItems.shipping_address.city   = orderWithItems.shipping_address.city.replace(/[^\w\s\-]/gi, '');
     orderWithItems.customer.name           = orderWithItems.customer.name.replace(/[^\w\s\-]/gi, '');
-
+    if (orderWithItems.signature_required) {
+      orderWithItems.notes = 'SIGNATURE ON DELIVERY';
+    }
     formattedOrders.push(orderWithItems);
     for (const item of orderWithItems.relationships.items) {
       if (
         item.sku !== "tax_amount" &&
         Math.sign(item.unit_price.amount) !== -1
       ) {
-        // @matt why is await being used here?
-        await formattedItems.push(item);
+        formattedItems.push(item);
       }
     }
     if (formattedOrders.length === orders.data.length) {

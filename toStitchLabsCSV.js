@@ -28,16 +28,22 @@ exports.StitchLabsOrderFields = [{
   default: "PAID"
 }, {
   label: "customer_first_name",
-  value: "billing_address.first_name"
+  value: "shipping_address.first_name"
 }, {
   label: "customer_last_name",
-  value: "billing_address.last_name"
+  value: "shipping_address.last_name"
 }, {
   label: "customer_email",
   value: "customer.email"
 }, {
   label: "shipping_address_name",
   value: "customer.name"
+}, {
+  label: "shipping_address_company",
+  value: "shipping_address.company"
+}, {
+  label: "notes",
+  value: "notes"
 }, {
   label: "shipping_address_street_1",
   value: "shipping_address.line_1"
