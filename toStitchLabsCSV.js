@@ -40,7 +40,7 @@ exports.StitchLabsOrderFields = [{
   value: "customer.name"
 }, {
   label: "shipping_address_company",
-  value: "shipping_address.company"
+  value: "shipping_address.company_name"
 }, {
   label: "notes",
   value: "notes"
