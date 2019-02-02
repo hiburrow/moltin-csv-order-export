@@ -12,7 +12,7 @@ exports.StitchLabsOrderFields = [{
   value: "meta.timestamps.created_at"
 }, {
   label: "ship_date",
-  value: "meta.timestamps.created_at"
+  value: "shipping_date"
 }, {
   label: "subtotal",
   value: "subtotal"
@@ -28,16 +28,22 @@ exports.StitchLabsOrderFields = [{
   default: "PAID"
 }, {
   label: "customer_first_name",
-  value: "billing_address.first_name"
+  value: "shipping_address.first_name"
 }, {
   label: "customer_last_name",
-  value: "billing_address.last_name"
+  value: "shipping_address.last_name"
 }, {
   label: "customer_email",
   value: "customer.email"
 }, {
   label: "shipping_address_name",
   value: "customer.name"
+}, {
+  label: "shipping_address_company",
+  value: "shipping_address.company_name"
+}, {
+  label: "notes",
+  value: "notes"
 }, {
   label: "shipping_address_street_1",
   value: "shipping_address.line_1"
@@ -112,7 +118,7 @@ exports.checkOrders = async function(orders) {
 
 /* given a single order, looks at its items to check for a negative priced item (promotion)
 or an item with a sku of "tax amount" (tax), appends those values to the order under fields "promotion"
-and "tax" before returning the order. If it doesn't find any items matching the criteria, 
+and "tax" before returning the order. If it doesn't find any items matching the criteria,
 it returns the orders as is*/
 const checkForTaxOrPromotion = async function(order) {
   let items      = order.relationships.items;

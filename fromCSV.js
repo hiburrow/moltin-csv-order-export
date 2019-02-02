@@ -21,7 +21,9 @@ exports.readSFTPFile = readPath => {
             // if there's nothing, that means we need to get orders from the beginning of time
             if (!stats || stats.size === 0) {
               console.log("file is empty");
-              resolve(['2018-08-16T00:00:00.000Z', true]);
+              var date = new Date();
+              date.setDate(date.getDate() - 1);
+              resolve([date.toISOString(), true]);
             } else {
               let readStream = sftp.createReadStream(readPath);
               readStream.on("data", data => {
@@ -32,7 +34,7 @@ exports.readSFTPFile = readPath => {
                 var lines     = streamedData.trim().split("\n");
                 var lastLine  = lines.slice(-1)[0];
                 var fields    = lastLine.split(",");
-                var timeField = fields.slice(2)[0];
+                var timeField = fields.slice(1)[0];
                 timeField     = timeField.replace(/"/g, "");
                 resolve([timeField, false]);
                 conn.end();
