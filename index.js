@@ -13,7 +13,6 @@ exports.myHandler = async function(event, context, callback) {
     return exports.process(orders, 0, finished[0], date, finished[1]);
   } catch (e) {
     callback(e);
-    return e;
   }
 };
 
