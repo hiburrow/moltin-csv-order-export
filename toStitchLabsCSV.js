@@ -136,19 +136,13 @@ const checkForTaxOrPromotion = async function(order) {
 
 const convert = async function(items, fields, fileName, headers) {
   try {
-    // @matt is await necessary here?
     let Parser = await new Json2csvParser({
       fields: fields,
       header: headers
     });
     let csvString = (await Parser.parse(items)) + "\r\n";
-    // @matt why are we using await and .then? uploaded is never returned, result is never used, I'm confused
-    let uploaded  = await toSFTPFile(csvString, fileName)
-      .then((result) => {
-        return csvString;
-      }).catch((e) => {
-        console.log(e);
-      })
+    let uploaded  = await toSFTPFile(csvString, fileName);
+    return csvString;
   } catch (err) {
     console.log(err);
     return err;
@@ -185,7 +179,7 @@ const toSFTPFile = function(content, path) {
             return console.log("Errror in connection", err);
           }
           console.log("Connection established");
-          console.log('conent to write is', content);
+          console.log('content to write is', content);
           let stats = sftp.stat(path, async function(err, stats) {
             if (err) {
               console.log(err);
