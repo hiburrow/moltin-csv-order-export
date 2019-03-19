@@ -99,6 +99,9 @@ let StitchLabsOrderItemFields = [{
   label: "price",
   value: "price"
 }, {
+  label: "tax",
+  value: "tax"
+}, {
   label: "quantity",
   value: "quantity"
 }];

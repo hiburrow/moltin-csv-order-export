@@ -149,6 +149,7 @@ exports.itemsLookup = async function(order, items) {
       if (item.id === id) {
         item.orderID = order.id;
         item.price = item.unit_price.amount / 100;
+        item.tax = +(item.meta.display_price.tax.unit.amount/100).toFixed(2);
         itemsArray.push(item);
       }
     }
