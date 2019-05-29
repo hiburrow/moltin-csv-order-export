@@ -82,7 +82,7 @@ exports.process = async(orders, PageOffsetCounter, time, trimmedTime, headers) =
             console.log("fetching next page of orders, created after", time);
             let date   = time.substring(0, time.indexOf('T'));
             let orders = await moltinFunctions.GetOrders(PageOffsetCounter, date);
-            return exports.process(orders, PageOffsetCounter, time, date, headers);
+            return exports.process(orders, PageOffsetCounter, time, date, false);
           } else {
             return (console.log("fetched all orders"));
           }
@@ -93,7 +93,7 @@ exports.process = async(orders, PageOffsetCounter, time, trimmedTime, headers) =
             console.log("fetching next page of orders, created after", time);
             let date   = time.substring(0, time.indexOf('T'));
             let orders = await moltinFunctions.GetOrders(PageOffsetCounter, trimmedTime);
-            return exports.process(orders, PageOffsetCounter, time, date, headers);
+            return exports.process(orders, PageOffsetCounter, time, date, false);
           } else {
             return (console.log("fetched all orders"));
           }
