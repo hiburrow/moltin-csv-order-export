@@ -14,7 +14,7 @@ const processProducts = function() {
   GetProducts(0, []).then(productsArray => {
     convert(productsArray, fields).then(csvString => {
       console.log(csvString);
-      toSFTPFile(csvString, "dev/LISTINGS/listings.csv");
+      toSFTPFile(csvString, process.env.LISTINGS);
     });
   });
 };
@@ -28,7 +28,7 @@ const GetProducts = function(PageOffsetCounter, productsArray) {
       .All()
       .then(products => {
         PageOffsetCounter = PageOffsetCounter + 100;
-        if (PageOffsetCounter < products.meta.results.all) {
+        if (PageOffsetCounter < products.meta.results.total) {
           products.data.forEach(function(product) {
             product.price = product.meta.display_price.with_tax.amount / 100;
             productsArray.push(product);
@@ -36,9 +36,8 @@ const GetProducts = function(PageOffsetCounter, productsArray) {
           return GetProducts(PageOffsetCounter, productsArray);
         } else {
           console.log("no more pages left to fetch");
-          let productsLeft = products.meta.results.all - (PageOffsetCounter - 100);
+          let productsLeft = products.meta.results.total - (PageOffsetCounter - 100);
           let productsLeftCounter = 0;
-          console.log(productsLeft);
           products.data.forEach(function(product) {
             product.price = product.meta.display_price.with_tax.amount / 100;
             productsArray.push(product);

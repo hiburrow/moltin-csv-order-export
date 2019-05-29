@@ -14,7 +14,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node -e 'require(\"./index.js\").myHandler()'",
-    "inspect": "node --inspect -e 'require(\"./index.js\").myHandler()'"
+    "inspect": "node --inspect-brk -e 'require(\"./index.js\").myHandler()'",
+    "products": "node products.js"
   },
   "author": "Matthew Foyle <matt@moltin.com>",
   "license": "ISC"

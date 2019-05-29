@@ -115,7 +115,7 @@ exports.formatOrders = async function(orders, items) {
     orderWithItems.shipping_address.line_2 = orderWithItems.shipping_address.line_2.replace(/[^\w\s\-]/gi, '');
     orderWithItems.shipping_address.city   = orderWithItems.shipping_address.city.replace(/[^\w\s\-]/gi, '');
     orderWithItems.customer.name           = orderWithItems.customer.name.replace(/[^\w\s\-]/gi, '');
-    if (orderWithItems.signature_required) {
+    if (orderWithItems.require_signature) {
       orderWithItems.notes = 'SIGNATURE ON DELIVERY';
     }
     formattedOrders.push(orderWithItems);
@@ -149,6 +149,7 @@ exports.itemsLookup = async function(order, items) {
       if (item.id === id) {
         item.orderID = order.id;
         item.price = item.unit_price.amount / 100;
+        item.tax = +(item.meta.display_price.tax.unit.amount/100).toFixed(2);
         itemsArray.push(item);
       }
     }
